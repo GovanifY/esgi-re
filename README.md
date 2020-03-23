@@ -70,47 +70,47 @@ Du coup une machine Linux devrait suffire pour suivre tout le cours.
   exploits de type stack overflow.
 
 
-Et dans le niveau plus technique, genre vraiment, il y'a très peu de chances que
+Et dans le niveau plus technique, genre vraiment, il y a très peu de chances que
 vous arriviez à tout comprendre du premier coup:
 
 * [Une analyse de chaine d'exploits iOS](https://googleprojectzero.blogspot.com/2019/08/a-very-deep-dive-into-ios-exploit.html), 
   Une analyse de chaines complètes d'exploits utilisés contre la population
   Uighur par les services chinois, vous visitez un site web et sans que vous le
-  sachiez vos données personelles sont envoyées aux services automatiquement. 
+  sachiez vos données personnelles sont envoyées aux services automatiquement. 
 * [PS3 Epic Fail](https://www.youtube.com/watch?v=5E0DkoQjCmI), 
   [Nintendo Hacking 2016](https://www.youtube.com/watch?v=8C5cn_Qj0G8), 
   [Methodically Defeating Nintendo Switch Security](https://arxiv.org/abs/1905.07643), 
-  des résumés plus techniques de hack de console de A a Z. Les talks de
+  des résumés plus techniques de hack de console de A à Z. Les talks de
   fail0verflow sont particulièrement intéressants!
 * [Un writeup sur un exploit de firefox](https://phoenhex.re/2017-06-21/firefox-structuredclone-refleak),
   un exploit qui en théorie permets d'exécuter du code choisi outre la sandbox
-  de firefox juste en visitant un site web!
+  de Firefox juste en visitant un site web!
 
 # Ghidra vs IDA (Attention c'est technique)
-  Ghidra entre autre a une architecture faisant en
-  sorte que rajouter des décompilateurs et les modifier est très simple, comparé a
-  IDA ou c'est impossible(des personnes ont du [transpilés une architecture
-  custom vers ARM pour avoir un décompilateur](https://github.com/TeamMolecule/mep-wtf); 
-  ils utilisent un langage qu'ils appellent SLEIGH qui définie comment parser
-  une architecture mais aussi comment elle fonctionne de façon très succinte. 
-  Sous IDA on doit faire des scripts pythons assez witchcraft pour que tout
-  fonctionne.  
-  Ghidra a un système de serveur pour faire de la RE collaborative intégrée, a
-  un système pour patcher et assembler directement sur le fichier que vous
-  regardez, est gratuit et open source libre(vous pouvez aider a fixer des bugs si
-  c'est super urgent contrairement a IDA), et a des features comme la vue
-  side-by-side assembleur décompilateur qu'IDA s'efforce de copier(pour vous dire,
-  IDA a refuser d'intégrer un undo depuis des années en narguant que c'était
-  beaucoup trop compliquéet quand Ghidra est sorti,
-  miraculeusement au bout de 3 mois c'était fait).   
-  Le système de plugin de Ghidra est mieux foutu et donne plus de libertées en
-  général. Ghidra a des méthodes pour auto créer des structures qu'IDA n'a pas.
-  Il est plus simple de définir des structures grâce à un GUI ou changer les
-  calling conventions/registres utilisés par une fonction.
 
-  La ou IDA a l'avantage c'est pour les binaires absolument énormes vu que
-  Ghidra prends un peu plus de ressources qu'IDA, avoir une vue en graphe plus
-  rapide(l'UX de Ghidra est super lente) et étudiez des trucs très spécifiques
-  comme des bouts de code d'iOS avec PAC.
+Contrairement à IDA, Ghidra est conçu de façon modulaire, ajouter ou changer un décompilateur est très facile.
+En particulier, pour IDA, des équipes de RE ont dû écrire un transpilateur d'une architecture custom vers ARM
+afin de pouvoir réutiliser le décompilateur d'IDA, c.f. <https://github.com/TeamMolecule/mep-wtf>.
 
+Précisément, Ghidra utilise un langage appelé SLEIGH qui définit comment parser l'arcthitecture
+mais aussi comment elle fonctionne de façon succinte.
 
+Alors que sous IDA, il est monnaie courante d'écrire des tas de scripts Python obscurs pour obtenir
+un environnement d'analyse décent.
+
+Aussi, points non négligeables, Ghidra a:
+
+* un système de serveur pour faire de la collaboration en RE
+* un système pour patcher et assembler directement sur le fichier sur lequel vous travaillez
+* une vue côte-à-côte assembleur/décompilateur qu'IDA refuse d'implémenter (dans la foulée, IDA refusait aussi d'ajouter une fonctionnalité d'undo, 3 mois après la sortie de Ghidra, la fonctionnalité est apparue magiquement.)
+* un vrai système de plugin modulaire
+* des méthodes d'auto-création des structures plus simples que celles d'IDA
+* est gratuit; open-source; **libre** (ce qui a le bon goût de vous permettre d'aller vous même patcher Ghidra ou fixer les bugs qui sont urgents pour votre équipe)
+
+Cependant, là où Ghidra pêche et IDA prend la main, c'est sur les binaires gigantesques.
+
+Ghidra étant écrit en Java, tournant sous la JVM, il prend plus facilement qu'IDA écrit en C++/Qt.
+
+Mais aussi, les fonctionnalités de calcul et d'affichage des graphes de flot de contrôle sont plus stables.
+
+Enfin, IDA est aussi pratique pour l'étude de code exotique, e.g. l'analyse des instructions PAC sous iOS.
