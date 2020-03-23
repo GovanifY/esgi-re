@@ -102,9 +102,9 @@ Aussi, points non négligeables, Ghidra a:
 
 * un système de serveur pour faire de la collaboration en RE
 * un système pour patcher et assembler directement sur le fichier sur lequel vous travaillez
-* une vue côte-à-côte assembleur/décompilateur qu'IDA refuse d'implémenter (dans la foulée, IDA refusait aussi d'ajouter une fonctionnalité d'undo, 3 mois après la sortie de Ghidra, la fonctionnalité est apparue magiquement.)
+* une vue côte-à-côte assembleur/décompilateur par défaut qu'IDA s'est décidé à copier (dans la foulée, IDA refusait aussi d'ajouter une fonctionnalité d'undo, 3 mois après la sortie de Ghidra, la fonctionnalité est apparue magiquement.)
 * un vrai système de plugin modulaire
-* des méthodes d'auto-création des structures plus simples que celles d'IDA
+* des méthodes d'auto-création des structures
 * est gratuit; open-source; **libre** (ce qui a le bon goût de vous permettre d'aller vous même patcher Ghidra ou fixer les bugs qui sont urgents pour votre équipe)
 
 Cependant, là où Ghidra pêche et IDA prend la main, c'est sur les binaires gigantesques.
