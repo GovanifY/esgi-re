@@ -20,6 +20,14 @@ questions!
 Les slides sont écrites en utilisant [reveal.js](https://github.com/hakimel/reveal.js) 
 ainsi elles seront disponibles au format html ou pdf, selon votre préférence
 
+# Setup
+
+Le cours sera centré autour de Linux et, pour la majeure partie afin d'aborder
+le concept pédagogiquement, n'aura pas de majeures mitigations récentes(ie ASLR, stack
+cookie, la stack ne SERA pas exécutable cependant).
+J'aborderais ces sujets selon l'avancée de la classe. Du coup une machine linux
+devrait suffir pour suivre tout le cours.
+
 # Outils
 
 * [Ghidra](https://ghidra-sre.org/), l'outil principal de reverse que l'on
@@ -40,32 +48,6 @@ ainsi elles seront disponibles au format html ou pdf, selon votre préférence
   grandement l'exploitation. Si vous avez vos plugins préférés de ce type ou
   votre propre debugger custom ça marche aussi :D
 
-# Ghidra vs IDA (Attention c'est technique)
-  Ghidra entre autre a une architecture faisant en
-  sorte que rajouter des décompilateurs et les modifier est très simple, comparé a
-  IDA ou c'est impossible(des personnes ont du [transpilés une architecture
-  custom vers ARM pour avoir un décompilateur](https://github.com/TeamMolecule/mep-wtf); 
-  ils utilisent un langage qu'ils appellent SLEIGH qui définie comment parser
-  une architecture mais aussi comment elle fonctionne de façon très succinte. 
-  Sous IDA on doit faire des scripts pythons assez witchcraft pour que tout
-  fonctionne.  
-  Ghidra a un système de serveur pour faire de la RE collaborative intégrée, a
-  un système pour patcher et assembler directement sur le fichier que vous
-  regardez, est gratuit et open source libre(vous pouvez aider a fixer des bugs si
-  c'est super urgent contrairement a IDA), et a des features comme la vue
-  side-by-side assembleur décompilateur qu'IDA s'efforce de copier(pour vous dire,
-  IDA a refuser d'intégrer un undo depuis des années en narguant que c'était
-  beaucoup trop compliquéet quand Ghidra est sorti,
-  miraculeusement au bout de 3 mois c'était fait).   
-  Le système de plugin de Ghidra est mieux foutu et donne plus de libertées en
-  général. Ghidra a des méthodes pour auto créer des structures qu'IDA n'a pas.
-  Il est plus simple de définir des structures grâce à un GUI ou changer les
-  calling conventions/registres utilisés par une fonction.
-
-  La ou IDA a l'avantage c'est pour les binaires absolument énormes vu que
-  Ghidra prends un peu plus de ressources qu'IDA, avoir une vue en graphe plus
-  rapide(l'UX de Ghidra est super lente) et étudiez des trucs très spécifiques
-  comme des bouts de code d'iOS avec PAC.
 
 # Ressources
 
@@ -102,11 +84,31 @@ vous arriviez à tout comprendre du premier coup:
   un exploit qui en théorie permets d'exécuter du code choisi outre la sandbox
   de firefox juste en visitant un site web!
 
+# Ghidra vs IDA (Attention c'est technique)
+  Ghidra entre autre a une architecture faisant en
+  sorte que rajouter des décompilateurs et les modifier est très simple, comparé a
+  IDA ou c'est impossible(des personnes ont du [transpilés une architecture
+  custom vers ARM pour avoir un décompilateur](https://github.com/TeamMolecule/mep-wtf); 
+  ils utilisent un langage qu'ils appellent SLEIGH qui définie comment parser
+  une architecture mais aussi comment elle fonctionne de façon très succinte. 
+  Sous IDA on doit faire des scripts pythons assez witchcraft pour que tout
+  fonctionne.  
+  Ghidra a un système de serveur pour faire de la RE collaborative intégrée, a
+  un système pour patcher et assembler directement sur le fichier que vous
+  regardez, est gratuit et open source libre(vous pouvez aider a fixer des bugs si
+  c'est super urgent contrairement a IDA), et a des features comme la vue
+  side-by-side assembleur décompilateur qu'IDA s'efforce de copier(pour vous dire,
+  IDA a refuser d'intégrer un undo depuis des années en narguant que c'était
+  beaucoup trop compliquéet quand Ghidra est sorti,
+  miraculeusement au bout de 3 mois c'était fait).   
+  Le système de plugin de Ghidra est mieux foutu et donne plus de libertées en
+  général. Ghidra a des méthodes pour auto créer des structures qu'IDA n'a pas.
+  Il est plus simple de définir des structures grâce à un GUI ou changer les
+  calling conventions/registres utilisés par une fonction.
 
-# Setup
+  La ou IDA a l'avantage c'est pour les binaires absolument énormes vu que
+  Ghidra prends un peu plus de ressources qu'IDA, avoir une vue en graphe plus
+  rapide(l'UX de Ghidra est super lente) et étudiez des trucs très spécifiques
+  comme des bouts de code d'iOS avec PAC.
 
-Le cours sera centré autour de Linux et, pour la majeure partie afin d'aborder
-le concept pédagogiquement, n'aura pas de majeures mitigations récentes(ie ASLR, stack
-cookie, la stack ne SERA pas exécutable cependant).
-J'aborderais ces sujets selon l'avancée de la classe. Du coup une machine linux
-devrait suffir pour suivre tout le cours.
+
