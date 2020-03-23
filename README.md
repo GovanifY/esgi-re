@@ -48,7 +48,7 @@ ainsi elles seront disponibles au format html ou pdf, selon votre préférence
   ils utilisent un langage qu'ils appellent SLEIGH qui définie comment parser
   une architecture mais aussi comment elle fonctionne de façon très succinte. 
   Sous IDA on doit faire des scripts pythons assez witchcraft pour que tout
-  fonctionne.
+  fonctionne.  
   Ghidra a un système de serveur pour faire de la RE collaborative intégrée, a
   un système pour patcher et assembler directement sur le fichier que vous
   regardez, est gratuit et open source libre(vous pouvez aider a fixer des bugs si
@@ -56,7 +56,7 @@ ainsi elles seront disponibles au format html ou pdf, selon votre préférence
   side-by-side assembleur décompilateur qu'IDA s'efforce de copier(pour vous dire,
   IDA a refuser d'intégrer un undo depuis des années en narguant que c'était
   beaucoup trop compliquéet quand Ghidra est sorti,
-  miraculeusement au bout de 3 mois c'était fait). 
+  miraculeusement au bout de 3 mois c'était fait).   
   Le système de plugin de Ghidra est mieux foutu et donne plus de libertées en
   général. Ghidra a des méthodes pour auto créer des structures qu'IDA n'a pas.
   Il est plus simple de définir des structures grâce à un GUI ou changer les
@@ -69,7 +69,7 @@ ainsi elles seront disponibles au format html ou pdf, selon votre préférence
 
 # Ressources
 
-* [Compiler Explorer](), un site aui permet de voir comment différents
+* [Compiler Explorer](https://godbolt.org/), un site aui permet de voir comment différents
   compilateurs compilent du code que vous donnez en temps réel, assez sympa pour
   commencer a avoir du feeling pour le reverse (ou à débugger des bugs de
   compilateur, ça arrive plus souvent que vous ne le croyez)
