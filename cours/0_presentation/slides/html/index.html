@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/moon.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h3>Exploitation de binaires, Reverse engineering</h3>
+					<p>
+					<small>Gauvain Roussel-Tarbouriech (<a href="mailto:gauvain@govanify.com">gauvain@govanify.com</a>)</small>
+					</p>
+				</section>
+
+					<section>
+						<p >J'utiliserais les noms anglais, allez sur bitoduc.fr si vous êtes gênés!</p>
+						<p class="fragment" >N'hésitez pas a poser des questions et à me dire si je vais trop rapidement sur un sujet!</p>
+
+					</section>
+
+				<section>
+					<section>
+						<h2>Importance du reverse</h2>
+						<p>
+						</p>
+						<p>La majorité de nos équipements sont "closed source"</p>
+						<p class="fragment" >Windows</p>
+						<p class="fragment" >Android (en partie)</p>
+						<p class="fragment" >MacOS/iOS</p>
+						<p class="fragment" >Les consoles de jeu</p>
+						<p class="fragment" >Même votre processeur!</p>
+
+					</section>
+					<section>
+						<p>Les vendeurs ne veulent pas partager leur code pour <br/><b>protéger leur propriété intellectuelle.</b></p>
+						<p class="fragment" >Ca ne les protège pas vraiment mais ça nous embête</p> <br/> <br/>
+						<p class="fragment" >Du coup faire de la recherche sur leurs produits, en sécu ou autre, nécessite souvent du reverse.</p>
+					</section>
+					<section>
+						<h2>La sécurité par l'obscurité</h2>
+						<p class="fragment" >Théorème: si on ne sait pas comment ça fonctionne on ne peux pas trouver de problèmes de sécurité!</p> 
+						<p class="fragment" >Contraposée: Les CVEs et Internet.</p>
+					</section>
+
+				</section>
+
+				<section>
+					<section>
+						<h2>Importance de l'attaque sur binaire</h2>
+						<p class="fragment" >Les attaquants travaillent très(trop) souvent sur des binaires selon les équipements</p>
+						<p class="fragment" >Il est bon de connaitre les méthodes des attaquants aussi bien dans l'attaque que la défense</p> 
+					</section>
+					<section>
+						<p>Examples d'attaques connues</p> 
+						<ul>
+							<li class="fragment">Les consoles de jeux vidéo</li>
+							<li class="fragment">EternalBlue(WannaCry), NSA</li>
+							<li class="fragment">Exploits iOS utilisés contre les Uighurs, MSS </li>
+						</ul> 
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Débouchées</h2>
+						<p class="fragment" >Un marché de 151Mds de dollars d'ici 2023</p>
+						<p class="fragment" >En pénurie de personnes hautement qualifiées</p> 
+						<p class="fragment" >Bon ok on vous a déjà raconté ça, mais je suis dispo si il y'a des questions sur le marché de la RE!</p> 
+					</section>
+			
+				</section>
+				<section>
+					<section>
+						<h2>Plan du cours </h2>
+						<p class="fragment" >Une introduction pratique a la sécurité offensive et au reverse engineering</p>
+						<ul>
+							<li class="fragment">Rappels d'assembleur</li>
+							<li class="fragment">Introduction aux outils et au reverse engineering</li>
+							<li class="fragment">Corruption de mémoire / Surface d'attaque</li>
+							<li class="fragment">Stack et Heap overflow avec mitigations</li>
+							<li class="fragment">ROP avec ret2libc</li>
+							<li class="fragment">Format String vulnerabilities</li>
+							<li class="fragment">Race conditions</li>
+							<li class="fragment">Injections de commandes <b>et + si possible!</b></li>
+						</ul> 
+					</section>
+			
+				</section>
+
+
+				<section>
+					<section>
+						<h2>Rappels d'asm</h2>
+						<p class="fragment" >2 régions mémoire: le stack et la heap</p>
+						<p class="fragment" >Le stack est utilisé pour stocker des variables, en appellant des fonctions etc</p> 
+						<p class="fragment" >La heap est allouée dynamiquement pour stocker des données variables</p> 
+					</section>
+					<section>
+						<p >Example d'allocation sur la stack en C</p> 
+						<pre><code data-trim data-noescape>
+						// 8 chars + un \00 a la fin
+						char array[9]="COVID-19";
+						</code></pre>
+					</section>
+					<section>
+						<p >Example d'allocation sur la heap en C</p> 
+						<pre><code data-trim data-noescape>
+						char* array = malloc(sizeof(char)*9);
+						strcpy(array,"COVID-19");
+						</code></pre>
+					</section>
+					<section>
+						<p>Les callings conventions(conventions d'appel)</p>
+						<p class="fragment" >Elles diffèrent selon le compilateur et la plateforme</p>
+						<p class="fragment" >Nous étudierons ici la plus commune pour le C et C++, __cdecl</p>
+					</section>
+					<section>
+						<p >Fonction exemple</p> 
+						<pre><code data-trim data-noescape>
+						_cdecl int exemple(int a, int b)
+						{
+ 						return a + b;
+						}
+						</code></pre>
+					</section>
+					<section>
+						<p>Son équivalent en assembleur</p> 
+						<pre><code data-trim data-noescape>
+						push 3
+						push 2
+						call exemple
+						add esp, 8
+						</code></pre>
+						<pre><code data-trim data-noescape>
+						exemple:
+						push ebp
+						mov ebp, esp
+						mov eax, [ebp + 8]
+						mov edx, [ebp + 12]
+						add eax, edx
+						pop ebp
+						ret
+						</code></pre>
+					</section>
+
+					<section>
+						<p>C'est pas un peu trop théorique?</p> 
+						<p class="fragment" >DEMO TIME!</p>
+					</section>
+
+					<section>
+					<p>
+					Allez sur <a href="https://godbolt.org/">godbolt.org</a> et testez par vous même!
+					</p>
+					<small><p >Essayez d'appeller des fonctions, définir des struct, etc</p></small>
+					</section>
+
+					
+			
+				</section>
+					<section>
+						<h2>Introduction aux outils de RE</h2>
+						<p>Cette partie sera une démonstration en pratique, n'hésitez pas a poser des questions sur mes actions!</p> 
+					</section>
+
+
+
+
+			</div>
+		</div>
+
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				hash: true,
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/highlight/highlight.js' },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
