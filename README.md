@@ -9,24 +9,26 @@ notamment:
  * Les travaux à rendre + corrigés 
  * Les binaires étudiés en classe ainsi que leur code source une fois terminé
 
-Le plan du cours est détaillé dans les slides "0\_presentation" et se clotura
+Le plan du cours est détaillé dans les slides "0\_presentation" et se clôtura
 par un mini CTF sur ce qui aura été abordé.
 
-N'hésitez pas à m'envoyer un mail si vous avez des difficultées ou des
+N'hésitez pas à m'envoyer un mail si vous avez des difficultés ou des
 questions!
 
 # Slides
 
 Les slides sont écrites en utilisant [reveal.js](https://github.com/hakimel/reveal.js) 
-ainsi elles seront disponibles au format html ou pdf, selon votre préférence
+ainsi elles seront disponibles au format HTML ou PDF, selon votre préférence
 
 # Setup
 
 Le cours sera centré autour de Linux et, pour la majeure partie afin d'aborder
-le concept pédagogiquement, n'aura pas de majeures mitigations récentes(ie ASLR, stack
-cookie, la stack ne SERA pas exécutable cependant).
-J'aborderais ces sujets selon l'avancée de la classe. Du coup une machine linux
-devrait suffir pour suivre tout le cours.
+le concept pédagogiquement, n'aura pas de majeures mitigations récentes (i.e. ASLR, stack
+cookies, la stack ne SERA pas exécutable cependant).
+
+J'aborderais ces sujets selon l'avancée de la classe.
+
+Du coup une machine Linux devrait suffire pour suivre tout le cours.
 
 # Outils
 
@@ -37,9 +39,9 @@ devrait suffir pour suivre tout le cours.
   Ghidra sur certains points très spécifiques mais la plupart du temps, même
   si vous obtenez IDA gratuitement grâce à l'aide d'un certain Jiang Ying, vous
   voudrez utiliser Ghidra. Une comparaison plus technique est disponible
-  dessous.
+  ci-dessous.
 * [radare2](https://github.com/radareorg/radare2), un autre outil de reverse en
-  ligne de commande. Un GUI est aussi disponible appellé Cutter. Il
+  ligne de commande. Un GUI est aussi disponible appelé Cutter. Il
   est en général plus lent que les deux autres mais a le mérite d'être open
   source et gratuit. Si vous n'avez pas besoin d'un bon décompilateur et voulez
   juste regarder rapidement de l'assembleur(en graphe ou non) d'un binaire alors
@@ -51,12 +53,12 @@ devrait suffir pour suivre tout le cours.
 
 # Ressources
 
-* [Compiler Explorer](https://godbolt.org/), un site aui permet de voir comment différents
+* [Compiler Explorer](https://godbolt.org/), un site qui permet de voir comment différents
   compilateurs compilent du code que vous donnez en temps réel, assez sympa pour
-  commencer a avoir du feeling pour le reverse (ou à débugger des bugs de
+  commencer a avoir du feeling pour le reverse (ou à debugger des bugs de
   compilateur, ça arrive plus souvent que vous ne le croyez)
 * [MicroCorruption](https://microcorruption.com/login), un CTF avec une archi
-  custom qui explique les bases de la corruption de mémoire, je recommende
+  custom qui explique les bases de la corruption de mémoire, je recommande
   fortement!
 * [RootMe](https://www.root-me.org/), un site français qui a quelques crackmes
   sympa pour apprendre l'exploit/reverse
