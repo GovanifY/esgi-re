@@ -46,7 +46,7 @@ Du coup une machine Linux devrait suffire pour suivre tout le cours.
   source et gratuit. Si vous n'avez pas besoin d'un bon décompilateur et voulez
   juste regarder rapidement de l'assembleur(en graphe ou non) d'un binaire alors
   ça peux être utile. 
-* [gdb-peda](https://github.com/longld/peda), un addon pour gdb aidant
+* [gef](https://github.com/hugsy/gef), un addon pour gdb aidant
   grandement l'exploitation. Si vous avez vos plugins préférés de ce type ou
   votre propre debugger custom ça marche aussi :D
 
