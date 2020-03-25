@@ -1,0 +1,31 @@
+la raison pour laquelle la ropchain ne fonctionne pas nécessite de comprendre le code source et assembleur:
+int showWrite(char* a, char* b) {
+    volatile int w = 32;
+    char buffer[50];
+
+    printf("Ecrivez %s: ", a);
+    gets(buffer);
+    memcpy(b, buffer, sizeof(buffer));
+
+    if(w!=32) {
+        win();
+    }
+    return 0;
+}
+
+Nous dépassons le buffer dans la ligne de l'appel du gets, suivi du memcpy devant. En dépassant le buffer nous réécrivons entre autre l'adresse de retour, qui ne s'exécutera qu'au return 0.
+Le problème étant qu'un memcpy arrive avant ce return. Il est inliné dans la fonction par gcc, et ne crée pas sa propre stack frame, réutilisant celle que l'on viens de corrompre.
+Voici un snippet de son implémentation en assembleur
+    0x8048828                  add    esp, 0x10
+    0x804882b                  mov    eax, DWORD PTR [ebp+0xc]
+    0x804882e                  mov    edx, DWORD PTR [ebp-0x3e]
+ →  0x8048831                  mov    DWORD PTR [eax], edx
+
+On peux voir, entre autre, que le registre eax prends la valeur de notre stack frame + 0xc. 
+En gros on a très exactement la place de faire une ropchain de 0xc bytes, soit trois p32.
+Sachant que le gadget utilisant le moins d'espace stack possible est:
+0x08048a6a : pop edi ; pop ebp ; ret
+nous utiliserons au moins 3 espaces stack, soit la limite de taille de 0xc.
+A ce point il nous faudrait trouver une valeur de registre correcte pour eax et qui soit aussi une valeur correcte a exécuter dans notre ropchain. Cela pourrait être fait en utilisant une chaine plus grosse, ie 0x08048a69 : pop esi ; pop edi ; pop ebp ; ret afin de ne pas jumper sur cette valeur de registre. Cepandant, comme vu plus haut, eax est utilisé comme un pointeur vers la stack utilisé en écriture lors du memcpy, ce que l'on ne peux pas prévoir a cause de l'ASLR.
+
+tl;dr le memcpy a empêché l'exploitation du binaire en ret2libc, aussi étrangement que cela puisse paraitre
