@@ -23,7 +23,7 @@ ainsi elles seront disponibles au format HTML ou PDF, selon votre préférence
 # Setup
 
 Le cours sera centré autour de Linux et, pour la majeure partie afin d'aborder
-le concept pédagogiquement, n'aura pas de majeures mitigations récentes (i.e. ASLR, stack
+le concept pédagogiquement, n'aura pas de majeures mitigations récentes (i.e. PIE, stack
 cookies, la stack ne SERA pas exécutable cependant).
 
 J'aborderais ces sujets selon l'avancée de la classe.
