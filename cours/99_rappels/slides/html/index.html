@@ -1,0 +1,643 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>reveal.js</title>
+
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/moon.css">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/monokai.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+        <style>
+
+section.ppc, div.log {
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+
+table.sw, table.sw td, table.sw th {
+    font-size: 90%;
+    border-collapse: collapse;
+    line-height: 1.2em;
+    vertical-align: middle;
+}
+
+table.sw td {
+    padding: 10px;
+    border: 4px solid #EBE6D6;
+}
+
+table.sw th {
+    padding: 10px;
+    text-align: center;
+    border: none;
+    font-size: 130%;
+}
+
+table.ppc, table.ppc td, table.ppc th {
+    font-size: 90%;
+    border-collapse: collapse;
+    line-height: 1.2em;
+    vertical-align: middle;
+}
+
+table.ppc th, table.ppc td {
+    padding: 10px;
+    border: 4px solid #EBE6D6;
+}
+table.ppc .h td {
+    width: 22%;
+}
+table.ppc th {
+    width: 11%;
+    text-align: center;
+    font-family: monospace;
+    font-size: 80%;
+}
+table.ppc tr.h td {
+    font-weight: bold;
+    text-align: center;
+}
+table.ppc code {
+    font-size: 80%;
+}
+table.ppc td.dis {
+    color: #355;
+    background-color: #001c22;
+    text-align: center;
+    font-size: 75%;
+}
+
+table.ppc .active {
+    background-color: #003c36;
+    color: #c3d1d1;
+}
+table.ppc tr:first-child .active {
+    background-color: #005036;
+    color: #ebe6d6;
+}
+table.ppc tr:nth-child(5) td {
+    height: 3.6em;
+    text-align: center;
+}
+table.ppc tr:nth-child(4) td {
+    height: 2.4em;
+    text-align: center;
+}
+table.ppc .active.pc {
+    background-color: #505c36;
+}
+
+table.ppc span.virt {
+    font-size: 80%;
+    font-weight: normal;
+}
+
+table.ppc .highlight {
+    background-color: #502626;
+}
+table.ppc .highlight2 {
+    background-color: #005026;
+}
+
+div.log {
+    font-size: 90%;
+    line-height: 1.2em;
+    border: 4px solid #EBE6D6;
+    margin-left: auto;
+    margin-top: 10px;
+    background-color: #00222a;
+    height: 3.85em;
+}
+div.log p {
+    margin: 0;
+    display: block;
+}
+div.log p.old {
+    color: #577;
+}
+div.log code {
+    font-size: 90%;
+    line-height: 1em;
+}
+div.logparent {
+    display: table;
+    width: 84%;
+    margin-top: 35px;
+    margin-left: 7%;
+}
+div.logparent > div {
+    display: table-row;
+}
+div.logparent div.log {
+    display: table-cell;
+    color: yellow;
+}
+div.logparent div.loglabel {
+    display: table-cell;
+    text-align: right;
+    padding-right: 20px;
+    vertical-align: middle;
+    width: 18%;
+}
+
+.hide {
+    visibility: hidden;
+}
+
+.hl-yellow {
+    color: #cc0;
+}
+
+.hl-white {
+    color: #EBE6D6;
+}
+
+span.sha1sum {
+    font-family: monospace;
+    font-weight: bold;
+    color: #eee;
+}
+
+span.overflow {
+    background-color: #eee;
+    color: #003c36;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+section.waves svg {
+    width: 1100px;
+    height: 60px;
+}
+
+img.diagram {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+        </style>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <h3>Exploitation de binaires, Reverse engineering: Rappels</h3>
+                    <p>
+                    <small>Gauvain Roussel-Tarbouriech (<a href="mailto:gauvain@govanify.com">gauvain@govanify.com</a>)</small>
+                    </p>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Reverse engineering sous Ghidra</h2>
+                        <p>
+                        </p>
+                        <p >Partez de ce que vous connaissez,
+                        que ce soit un string ou l'entrypoint (si le binaire est
+                        petit!)</p>
+                        <p class="fragment" >Toutes les vues de Ghidra sont
+                        synchronisées, sélectionnez dans une fenêtre pour voir
+                        ce a quoi correspond cette selection dans une autre(i.e.
+                        asm vs pseudocode)</p>
+
+                    </section>
+                    <section>
+                        <h2>Pseudocode</h2>
+                        <p>N'oubliez pas de retyper les variables et les
+                        renommer selon vos déductions</p>
+                        <p class="fragment" >Si un bout de code fait pas mal de
+                        maths avec des constantes, cherchez ces constantes sur
+                        votre moteur de recherche/GitHub</p> 
+                        <p class="fragment" >Le pseucode n'est pas toujours
+                        fiable, n'hésitez pas à comparer avec l'assembleur si
+                        vous ne comprenez pas exactement une partie</p>
+                    </section>
+                    <section>
+                        <h2>Pseudocode</h2>
+                        <small>Si vous avez une variable pas
+                            mal utilisée comme X+{1,2,3,4,8,...} alors c'est
+                            surement soit un array soit une structure. Les
+                            structures peuvent être créés automatiquement sous
+                            ghira, et vous pouvez retyper la variable en array.
+                            Gardez ce qui fait le plus sens!</small>
+                        <img src="img/before-structs.png"></img>
+                        <img src="img/after-structs.png"></img>
+                    </section>
+                    <section>
+                        <h2>Les XRefs</h2>
+                        <img src="img/xref.png"></img>
+                        <p class="fragment" >Les XRefs vous permettent de
+                        trouver comment et ou une fonction, constante ou valeur
+                        globale est utilisée</p> 
+                        <p class="fragment" >Lexique entre paranthèse: c = call,
+                        R = read, W = write, * = inconnu</p>
+                    </section>
+                    <section>
+                        <h2>Les XRefs</h2>
+                        <p >Vous pouvez aussi trouver tous les
+                        appels et utilisations de fonction dans une fonction
+                        sélectionnée avec Windows&rarr;Function Call Trees</p> 
+                        <img src="img/XRefs-tree.png"></img>
+                    </section>
+                    <section>
+                        <h2>Reverse dynamique</h2>
+                        <p class="fragment" >Utilisez gdb pour voir
+                        dynamiquement comment certaines fonctions fonctionnent</p>
+                        <p class="fragment" >Vous pouvez patcher temporairement
+                        les valeurs de retour dans Ghidra pour voir si le
+                        résultat est plus lisible dans le pseudocode right click
+                        &rarr;Patch Instruction</p>
+                    </section>
+
+
+                </section>
+                <section>
+
+                    <section>
+                        <h2>Mitigations</h2>
+                        <p ><b>NX: No eXecute</b>:</br> rends la stack non exécutable.
+                        Empêche l'exécution de shellcode</p>
+                    </section>
+                    <section>
+                        <p ><b>ASLR: Address Space Layout
+                            Randomization</b>:</br> rends les adresses de librairies, stack
+                        et heap aléatoire à chaque exécution du programme.
+                        Rends, entre autre, le ROP plus difficile</p>
+                    </section>
+                    <section>
+                        <p ><b>PIE: Position Independant
+                            Executable</b>:</br> mets le code assembleur du programme a une
+                        région aléatoire de la mémoire à chaque exécution du
+                        processus. Rends le ROP plus difficile</p>
+                    </section>
+                    <section>
+                        <p ><b>Stack Cookie</b>:</br> Mets toute les variables
+                        locales avant les variables de type buffer dans le stack et
+                        ajoute une valeur
+                        aléatoire avant la valeur de retour et la vérifie avant
+                        chaque exécution. Rends le ROP plus difficile</p>
+                    </section>
+                </section>
+
+
+                <section>
+                    <section>
+                        <h2>ROP</h2>
+                        <p >Return Oriented Programming. C'est une technique
+                        d'exploitation réutilisant du code déjà existant.
+                        Indispensable si le NX est présent</p>
+                        <p class="fragment" >Peux être exploité quand on peux
+                        réécrire l'adresse de retour dans le stack(gràce a, par
+                        exemple, un buffer overflow)</p>
+                    </section>
+                    <section>
+                        <h2>Buffer overflow</h2>
+                        <p >On écris par dela un buffer ce qui réécris l'adresse
+                        de retour dans le stack</p>
+                        <p class="fragment" >On peux savoir ou elle est réécrite
+                        en créant un pattern de brujin et regardant quelle
+                        valeur contient eip</p>
+                        <p class="fragment" >Si le programme segfault avant de réécrire
+                        cette adresse regardez la première valeur sur le stack
+                        dans gdb au moment du ret fatidique</p>
+                    </section>
+                    <section>
+                        <h2>Gadgets</h2>
+                        <p>Un gadget est une partie de code assembleur finissant
+                        par un ret, on peux en trouver avec <a
+                           href="https://github.com/JonathanSalwan/ROPgadget">ROPgadget</a></p>
+                        <p class="fragment">Ainsi le code s'exécute puis exécute
+                        la prochaine adresse sur la ropchain</p>
+                        <p class="fragment">Dans les prochaines slides, si le
+                        registre dans lequel on pop n'est pas précisé il n'est
+                        pas important, sinon il est crucial</p>
+                    </section>
+
+                    <section>
+                        <h2>Arguments</h2>
+                        <p>Chaque fonction prends des arguments soit sur le
+                        stack soit sur un registre</p>
+                        <p class="fragment">On peux le savoir pour une fonction
+                        en particulier en regardant ghidra</p>
+                        <p class="fragment">Si la fonction n'est pas présente,
+                        faite un binaire de test sur la même plateforme avec la
+                        même architecture! (32 vs 64bits)</p>
+                    </section>
+                    <section>
+                        <h2>Arguments</h2>
+                        <p>Exemple stack</p>
+                        <img src="img/arg-stack.png"></img>
+                        <p class="fragment" data-fragment-index="2">Exemple registre</p>
+                        <img class="fragment" data-fragment-index="2" src="img/arg-reg.png"></img>
+                    </section>
+                    <section>
+                        <h2>Arguments</h2>
+                        <p>Imaginons que function_reg prenne en
+                        argument le registre rdi et qu'on veuille faire l'appel
+                        <code>function_reg(12)</code></p>
+                    </section>
+                    <section>
+                        <h2>Arguments</h2>
+                        <table class="ppc">
+                            <tr>
+                                <th class="pc">pop rdi; ret</th>
+                                <th>12</th>
+                                <th>fonction_reg</th>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </table>
+                        <div class="logparent">
+                            <div class="log">
+                                <p>rdi=inconnu</p>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <h2>Arguments</h2>
+                        <table class="ppc">
+                            <tr>
+                                <th class="pc active">pop rdi; ret</th>
+                                <th class="pc highlight">12</th>
+                                <th>fonction_reg</th>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </table>
+                        <div class="logparent">
+                            <div class="log">
+                                <p class="old">rdi=inconnu</p>
+                                <p>pop est exécuté, 12 est enlevé du stack, rdi=12</p>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <h2>Arguments</h2>
+                        <table class="ppc">
+                            <tr>
+                                <th class="pc highlight">pop rdi; ret</th>
+                                <th class="pc highlight">12</th>
+                                <th>fonction_reg</th>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </table>
+                        <div class="logparent">
+                            <div class="log">
+                                <p class="old">rdi=inconnu</p>
+                                <p class="old">pop est exécuté, 12 est enlevé du stack, rdi=12</p>
+                                <p>ret est exécuté, on continue</p>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <h2>Arguments</h2>
+                        <table class="ppc">
+                            <tr>
+                                <th class="pc highlight">pop rdi; ret</th>
+                                <th class="pc highlight" >12</th>
+                                <th class="pc active" >fonction_reg</th>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </table>
+                        <div class="logparent">
+                            <div class="log">
+                                <p class="old">pop est exécuté, 12 est enlevé du
+                                stack, rdi=12</p>
+                                <p class="old">ret est exécuté, on continue</p>
+                                <p><code>function_reg</code> est exécuté</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2>Arguments</h2>
+                        <p>Imaginons que function_stack prenne en
+                            argument le Stack[+0x4] et qu'on veuille faire l'appel
+                            <code>function_stack(12)</code></p>
+                    </section>
+                    <section>
+                        <h2>Arguments</h2>
+                        <table class="ppc">
+                            <tr>
+                                <th>Stack[0x0]</th>
+                                <th>Stack[0x4]</th>
+                                <th>Stack[0x8]</th>
+                            </tr>
+                            <tr>
+                                <th>fonction_stack</th>
+                                <th>pop; ret</th>
+                                <th>12</th>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </table>
+                        <div class="logparent">
+                            <div class="log">
+                                <p><code>function_stack</code> n'est pas encore
+                                appellé</p>
+                            </div>
+                        </div>
+
+                    </section>
+                    <section>
+                        <h2>Arguments</h2>
+                        <table class="ppc">
+                            <tr>
+                                <th class="pc highlight">Stack[-0x4]</th>
+                                <th>Stack[0x0]</th>
+                                <th class="pc active">Stack[0x4]</th>
+                            </tr>
+                            <tr>
+                                <th class="pc highlight">fonction_stack</th>
+                                <th>pop; ret</th>
+                                <th class="pc active">12</th>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </table>
+                        <div class="logparent">
+                            <div class="log">
+                                <p class="old"><code>function_stack</code> n'est pas encore
+                                appellé</p>
+                                <p ><code>function_stack</code> est appelé, le stack se met à
+                                jour, Stack[0x4] est utilisé comme argument</p>
+                            </div>
+                        </div>
+
+                    </section>
+                    <section>
+                        <h2>Arguments</h2>
+                        <table class="ppc">
+                            <tr>
+                                <th class="pc highlight">Stack[-0x8]</th>
+                                <th class="pc highlight">Stack[-0x4]</th>
+                                <th class="pc active">Stack[0x0]</th>
+                            </tr>
+                            <tr>
+                                <th class="pc highlight">fonction_stack</th>
+                                <th class="pc highlight">pop; ret</th>
+                                <th class="pc active">12</th>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </table>
+                        <div class="logparent">
+                            <div class="log">
+                                <p class="old" ><code>function_stack</code> est appelé, le stack se met à
+                                jour, Stack[0x4] est utilisé comme argument</p>
+                                <p >Le stack est màj, pop est appellé et enlève
+                                l'argument du stack</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <section>
+                        <h2>Arguments</h2>
+                        <table class="ppc">
+                            <tr>
+                                <th class="pc highlight">Stack[-0xC]</th>
+                                <th class="pc highlight">Stack[-0x8]</th>
+                                <th class="pc highlight">Stack[-0x4]</th>
+                            </tr>
+                            <tr>
+                                <th class="pc highlight">fonction_stack</th>
+                                <th class="pc highlight">pop; ret</th>
+                                <th class="pc highlight">12</th>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </table>
+                        <div class="logparent">
+                            <div class="log">
+                                <p class="old">Le stack est màj, pop est appellé et enlève
+                                l'argument du stack</p>
+                                <p>Le stack est nettoyé, on peux continuer
+                                l'exécution</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+
+
+
+                    <section>
+                        <h2>ret2libc</h2>
+                        <p >On veux lancer un /bin/sh mais notre programme n'a
+                        aucun gadget utile</p>
+                        <ul>
+                            <li class="fragment" >On obtiens l'adresse de la libc dans la
+                                mémoire(infoleak)</li>
+                            <li class="fragment" >On appelle system("/bin/sh")!</li>
+                        </ul>
+                        <p class="fragment"><b>Permets de palier au manque de gadgets utiles</b></p>
+                    </section>
+                    <section>
+                        <h2>Infoleak</h2>
+                        <p >2 cas possible pour du ROP/ret2libc:</p>
+                        <ul>
+                            <li class="fragment">Sans PIE et stack cookie: on peux faire une ropchain qui va
+                                imprimer l'adresse de __libc_start_main
+                                directement</li>
+                            <li class="fragment">Avec PIE et stack cookie: on a besoin d'un infoleak nous
+                                permettant de lire au minimum la stack. Un
+                                string format peut faire l'affaire</li>
+                        </ul>
+                        <p class="fragment"><b>Un infoleak peut être utile dans bien d'autre cas!</b></p>
+                    </section>
+
+
+
+
+                </section>
+
+                <section>
+                    <h2>Race Condition</h2>
+                    <p >Un bug logique dans lequel on peux modifier une variable
+                    pendant que le programme l'utilise et ne la vérifie pas</p>
+                    <p class="fragment" >Aussi appellée TOCTOU(Time Of Check
+                    Time Of Use) pour les fous</p>
+                    <p class="fragment" >Exemple: le programme écris dans un
+                    fichier temporaire et le réutilise plus tard, on peux
+                    réécrire ce fichier</p>
+                </section>
+
+                <section>
+                    <h2>Command Injection</h2>
+                    <p >Un bug logique possible lorsque l'on laisse
+                    l'utilisateur renseigner des arguments d'une commande.</p>
+                    <p class="fragment" >Si non sanitizé l'utilisateur peut
+                    escape et exécuter les commandes qu'il veux, exemple: "cat
+                    test;/bin/sh"</p>
+                    <p class="fragment" >Un autre exemple connu: les
+                    SQLi(injections SQL)</p>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Format String</h2>
+                        <p >Un bug présent lorsqu'un programme printf un input que
+                        l'utilisateur controle</p>
+                        <p class="fragment" >Le printf charge ses arguments dans le
+                        stack. Il est possible d'abuser cette technique afin de
+                        jouer avec le stack</p>
+
+                    </section>
+
+                    <section>
+                        <ul>
+                            <li>%x: Affiche le paramètre en hexadécimal</li>
+                            <li class="fragment" >%n: Ecris le nombre de charactères
+                                imprimés dans l'argument traité en tant que liointeur</li>
+                            <li class="fragment" >%.33d: Ecris 33 charactères</li>
+                            <li class="fragment" >%2$x: affiche le second liaramètre dans
+                                le stack. Fonctionne avec n'importe quels charactères
+                                spéciaux de lirintf</li>
+                        </ul>
+                        <p class="fragment" >Exemple: %.65536d%35$n écris la valeur
+                        65535(0x10000) sur l'élément liointé liar la 35ème valeur sur
+                        le stack</p>
+                    </section>
+                </section>
+
+
+
+
+            </div>
+        </div>
+
+        <script src="js/reveal.js"></script>
+
+        <script>
+            // More info about config & dependencies:
+            // - https://github.com/hakimel/reveal.js#configuration
+            // - https://github.com/hakimel/reveal.js#dependencies
+            Reveal.initialize({
+                hash: true,
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/highlight/highlight.js' },
+                    { src: 'plugin/notes/notes.js', async: true }
+                ]
+            });
+        </script>
+    </body>
+</html>
