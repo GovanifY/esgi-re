@@ -195,7 +195,7 @@ img.diagram {
         <div class="reveal">
             <div class="slides">
                 <section>
-                    <h3>Exploitation de binaires, Reverse engineering: Rappels</h3>
+                    <h3>Exploitation de binaires, Reverse engineering : Rappels</h3>
                     <p>
                     <small>Gauvain Roussel-Tarbouriech (<a href="mailto:gauvain@govanify.com">gauvain@govanify.com</a>)</small>
                     </p>
@@ -207,33 +207,33 @@ img.diagram {
                         <p>
                         </p>
                         <p >Partez de ce que vous connaissez,
-                        que ce soit un string ou l'entrypoint (si le binaire est
-                        petit!)</p>
+                        que ce soit un string ou l’entrypoint (si le binaire est
+                        petit !)</p>
                         <p class="fragment" >Toutes les vues de Ghidra sont
                         synchronisées, sélectionnez dans une fenêtre pour voir
-                        ce a quoi correspond cette selection dans une autre(i.e.
-                        asm vs pseudocode)</p>
+                        ce a quoi correspond cette selection dans une autre (c-à-d
+                        asm vs. pseudocode)</p>
 
                     </section>
                     <section>
                         <h2>Pseudocode</h2>
-                        <p>N'oubliez pas de retyper les variables et les
+                        <p>N’oubliez pas de retyper les variables et les
                         renommer selon vos déductions</p>
                         <p class="fragment" >Si un bout de code fait pas mal de
                         maths avec des constantes, cherchez ces constantes sur
                         votre moteur de recherche/GitHub</p> 
-                        <p class="fragment" >Le pseucode n'est pas toujours
-                        fiable, n'hésitez pas à comparer avec l'assembleur si
+                        <p class="fragment" >Le pseucode n’est pas toujours
+                        fiable, n’hésitez pas à comparer avec l’assembleur si
                         vous ne comprenez pas exactement une partie</p>
                     </section>
                     <section>
                         <h2>Pseudocode</h2>
                         <small>Si vous avez une variable pas
-                            mal utilisée comme X+{1,2,3,4,8,...} alors c'est
+                            mal utilisée comme X+{1,2,3,4,8,...} alors c’est
                             surement soit un array soit une structure. Les
                             structures peuvent être créés automatiquement sous
                             ghira, et vous pouvez retyper la variable en array.
-                            Gardez ce qui fait le plus sens!</small>
+                            Gardez ce qui fait le plus sens !</small>
                         <img src="img/before-structs.png"></img>
                         <img src="img/after-structs.png"></img>
                     </section>
@@ -243,7 +243,7 @@ img.diagram {
                         <p class="fragment" >Les XRefs vous permettent de
                         trouver comment et ou une fonction, constante ou valeur
                         globale est utilisée</p> 
-                        <p class="fragment" >Lexique entre paranthèse: c = call,
+                        <p class="fragment" >Lexique entre paranthèse : c = call,
                         R = read, W = write, * = inconnu</p>
                     </section>
                     <section>
@@ -260,7 +260,7 @@ img.diagram {
                         <p class="fragment" >Vous pouvez patcher temporairement
                         les valeurs de retour dans Ghidra pour voir si le
                         résultat est plus lisible dans le pseudocode right click
-                        &rarr;Patch Instruction</p>
+                        &rarr; Patch Instruction</p>
                     </section>
 
 
@@ -269,23 +269,23 @@ img.diagram {
 
                     <section>
                         <h2>Mitigations</h2>
-                        <p ><b>NX: No eXecute</b>:</br> rends la stack non exécutable.
-                        Empêche l'exécution de shellcode</p>
+                        <p ><b>NX (No eXecute)</b> :</br> rend la stack non exécutable.
+                        Empêche l’exécution de shellcode</p>
                     </section>
                     <section>
-                        <p ><b>ASLR: Address Space Layout
-                            Randomization</b>:</br> rends les adresses de librairies, stack
+                        <p ><b>ASLR (Address Space Layout
+                            Randomization)</b> :</br> rend les adresses de librairies, stack
                         et heap aléatoire à chaque exécution du programme.
                         Rends, entre autre, le ROP plus difficile</p>
                     </section>
                     <section>
-                        <p ><b>PIE: Position Independant
-                            Executable</b>:</br> mets le code assembleur du programme a une
+                        <p ><b>PIE (Position Independant
+                            Executable)</b> :</br> met le code assembleur du programme a une
                         région aléatoire de la mémoire à chaque exécution du
                         processus. Rends le ROP plus difficile</p>
                     </section>
                     <section>
-                        <p ><b>Stack Cookie</b>:</br> Mets toute les variables
+                        <p ><b>Stack Cookie</b> :</br> met toutes les variables
                         locales avant les variables de type buffer dans la stack et
                         ajoute une valeur
                         aléatoire avant la valeur de retour et la vérifie avant
@@ -297,49 +297,49 @@ img.diagram {
                 <section>
                     <section>
                         <h2>ROP</h2>
-                        <p >Return Oriented Programming. C'est une technique
-                        d'exploitation réutilisant du code déjà existant.
+                        <p >Return Oriented Programming. C’est une technique
+                        d’exploitation réutilisant du code déjà existant.
                         Indispensable si le NX est présent</p>
-                        <p class="fragment" >Peux être exploité quand on peux
-                        réécrire l'adresse de retour dans la stack (grâce a, par
+                        <p class="fragment" >Peut être exploité quand on peut
+                        réécrire l’adresse de retour dans la stack (grace à, par
                         exemple, un buffer overflow)</p>
                     </section>
                     <section>
                         <h2>Buffer overflow</h2>
-                        <p >On écris par dela un buffer ce qui réécris l'adresse
+                        <p >On écrit par-delà un buffer ce qui réécrit l’adresse
                         de retour dans la stack</p>
-                        <p class="fragment" >On peux savoir ou elle est réécrite
+                        <p class="fragment" >On peut savoir où elle est réécrite
                         en créant un pattern de brujin et regardant quelle
-                        valeur contient eip</p>
+			valeur contient <code>eip</code></p>
                         <p class="fragment" >Si le programme segfault avant de réécrire
                         cette adresse regardez la première valeur sur la stack
-                        dans gdb au moment du ret fatidique</p>
+			dans gdb au moment du <code>ret</code> fatidique</p>
                     </section>
                     <section>
                         <h2>Gadgets</h2>
                         <p>Un gadget est une partie de code assembleur finissant
-                        par un ret, on peux en trouver avec <a
+                        par un ret, on peut en trouver avec <a
                            href="https://github.com/JonathanSalwan/ROPgadget">ROPgadget</a></p>
-                        <p class="fragment">Ainsi le code s'exécute puis exécute
+                        <p class="fragment">Ainsi le code s’exécute puis exécute
                         la prochaine adresse sur la ropchain</p>
                         <p class="fragment">Dans les prochaines slides, si le
-                        registre dans lequel on pop n'est pas précisé il n'est
+                        registre dans lequel on pop n’est pas précisé il n’est
                         pas important, sinon il est crucial</p>
                     </section>
 
                     <section>
                         <h2>Arguments</h2>
-                        <p>Chaque fonction prends des arguments soit sur le
+                        <p>Chaque fonction prends des arguments soit sur la
                         stack soit sur un registre</p>
-                        <p class="fragment">On peux le savoir pour une fonction
+                        <p class="fragment">On peut le savoir pour une fonction
                         en particulier en regardant ghidra</p>
-                        <p class="fragment">Si la fonction n'est pas présente,
-                        faite un binaire de test sur la même plateforme avec la
-                        même architecture! (32 vs 64bits)</p>
+                        <p class="fragment">Si la fonction n’est pas présente,
+                        faites un binaire de test sur la même plateforme avec la
+                        même architecture ! (32 vs. 64bits)</p>
                     </section>
                     <section>
                         <h2>Arguments</h2>
-                        <p>Exempla stack</p>
+                        <p>Exemple stack</p>
                         <img src="img/arg-stack.png"></img>
                         <p class="fragment" data-fragment-index="2">Exemple registre</p>
                         <img class="fragment" data-fragment-index="2" src="img/arg-reg.png"></img>
@@ -347,10 +347,10 @@ img.diagram {
                     <section>
                         <h2>Arguments</h2>
                         <p>Imaginons que function_reg prenne en
-                        argument le registre rdi et qu'on veuille faire l'appel
+                        argument le registre rdi et qu’on veuille faire l’appel
                         <code>function_reg(12)</code></p>
                     </section>
-                    <section>
+                    <section data-transition="none">
                         <h2>Arguments</h2>
                         <table class="ppc">
                             <tr>
@@ -367,7 +367,7 @@ img.diagram {
                             </div>
                         </div>
                     </section>
-                    <section>
+                    <section data-transition="none">
                         <h2>Arguments</h2>
                         <table class="ppc">
                             <tr>
@@ -381,11 +381,11 @@ img.diagram {
                         <div class="logparent">
                             <div class="log">
                                 <p class="old">rdi=inconnu</p>
-                                <p>pop est exécuté, 12 est enlevé du stack, rdi=12</p>
+                                <p>pop est exécuté, 12 est enlevé de la stack, rdi=12</p>
                             </div>
                         </div>
                     </section>
-                    <section>
+                    <section data-transition="none">
                         <h2>Arguments</h2>
                         <table class="ppc">
                             <tr>
@@ -399,12 +399,12 @@ img.diagram {
                         <div class="logparent">
                             <div class="log">
                                 <p class="old">rdi=inconnu</p>
-                                <p class="old">pop est exécuté, 12 est enlevé du stack, rdi=12</p>
+                                <p class="old">pop est exécuté, 12 est enlevé de la stack, rdi=12</p>
                                 <p>ret est exécuté, on continue</p>
                             </div>
                         </div>
                     </section>
-                    <section>
+                    <section data-transition="none">
                         <h2>Arguments</h2>
                         <table class="ppc">
                             <tr>
@@ -417,7 +417,7 @@ img.diagram {
                         </table>
                         <div class="logparent">
                             <div class="log">
-                                <p class="old">pop est exécuté, 12 est enlevé du
+                                <p class="old">pop est exécuté, 12 est enlevé de la
                                 stack, rdi=12</p>
                                 <p class="old">ret est exécuté, on continue</p>
                                 <p><code>function_reg</code> est exécuté</p>
@@ -428,10 +428,10 @@ img.diagram {
                     <section>
                         <h2>Arguments</h2>
                         <p>Imaginons que function_stack prenne en
-                            argument le Stack[+0x4] et qu'on veuille faire l'appel
+                            argument le Stack[+0x4] et qu’on veuille faire l’appel
                             <code>function_stack(12)</code></p>
                     </section>
-                    <section>
+                    <section data-transition="none">
                         <h2>Arguments</h2>
                         <table class="ppc">
                             <tr>
@@ -449,13 +449,13 @@ img.diagram {
                         </table>
                         <div class="logparent">
                             <div class="log">
-                                <p><code>function_stack</code> n'est pas encore
+                                <p><code>function_stack</code> n’est pas encore
                                 appellé</p>
                             </div>
                         </div>
 
                     </section>
-                    <section>
+                    <section data-transition="none">
                         <h2>Arguments</h2>
                         <table class="ppc">
                             <tr>
@@ -473,7 +473,7 @@ img.diagram {
                         </table>
                         <div class="logparent">
                             <div class="log">
-                                <p class="old"><code>function_stack</code> n'est pas encore
+                                <p class="old"><code>function_stack</code> n’est pas encore
                                 appellé</p>
                                 <p ><code>function_stack</code> est appelé, la stack se met à
                                 jour, Stack[0x4] est utilisé comme argument</p>
@@ -481,7 +481,7 @@ img.diagram {
                         </div>
 
                     </section>
-                    <section>
+                    <section data-transition="none">
                         <h2>Arguments</h2>
                         <table class="ppc">
                             <tr>
@@ -502,13 +502,13 @@ img.diagram {
                                 <p class="old" ><code>function_stack</code> est appelé, la stack se met à
                                 jour, Stack[0x4] est utilisé comme argument</p>
                                 <p >Le stack est màj, pop est appellé et enlève
-                                l'argument du stack</p>
+                                l’argument de la stack</p>
                             </div>
                         </div>
 
                     </section>
 
-                    <section>
+                    <section data-transition="none">
                         <h2>Arguments</h2>
                         <table class="ppc">
                             <tr>
@@ -527,12 +527,18 @@ img.diagram {
                         <div class="logparent">
                             <div class="log">
                                 <p class="old">Le stack est màj, pop est appellé et enlève
-                                l'argument du stack</p>
-                                <p>Le stack est nettoyé, on peux continuer
-                                l'exécution</p>
+                                l’argument de la stack</p>
+                                <p>Le stack est nettoyé, on peut continuer
+                                l’exécution</p>
                             </div>
                         </div>
 
+                    </section>
+                    <section>
+                        <h2>Arguments</h2>
+                        <p >P.S: Si on a plus d'un argument sur la stack il faudra
+                        trouver un gadget avec autant de pop que d'arguments
+                        suivi d'un ret. </p>
                     </section>
 
 
@@ -540,27 +546,27 @@ img.diagram {
 
                     <section>
                         <h2>ret2libc</h2>
-                        <p >On veux lancer un /bin/sh mais notre programme n'a
+                        <p >On veux lancer un /bin/sh mais notre programme n’a
                         aucun gadget utile</p>
                         <ul>
-                            <li class="fragment" >On obtiens l'adresse de la libc dans la
-                                mémoire(infoleak)</li>
-                            <li class="fragment" >On appelle system("/bin/sh")!</li>
+                            <li class="fragment" >On obtiens l’adresse de la libc dans la
+                                mémoire (infoleak)</li>
+			    <li class="fragment" >On appelle <code>system("/bin/sh")</code> !</li>
                         </ul>
-                        <p class="fragment"><b>Permets de palier au manque de gadgets utiles</b></p>
+                        <p class="fragment"><b>Permet de palier au manque de gadgets utiles</b></p>
                     </section>
                     <section>
                         <h2>Infoleak</h2>
-                        <p >2 cas possible pour du ROP/ret2libc:</p>
+                        <p >Deux cas possible pour du ROP/ret2libc :</p>
                         <ul>
-                            <li class="fragment">Sans PIE et stack cookie: on peux faire une ropchain qui va
-                                imprimer l'adresse de __libc_start_main
+                            <li class="fragment">Sans PIE et stack cookie : on peut faire une ropchain qui va
+                                imprimer l’adresse de __libc_start_main
                                 directement</li>
-                            <li class="fragment">Avec PIE et stack cookie: on a besoin d'un infoleak nous
+                            <li class="fragment">Avec PIE et stack cookie : on a besoin d’un infoleak nous
                                 permettant de lire au minimum la stack. Un
-                                string format peut faire l'affaire</li>
+                                string format peut faire l’affaire</li>
                         </ul>
-                        <p class="fragment"><b>Un infoleak peut être utile dans bien d'autre cas!</b></p>
+                        <p class="fragment"><b>Un infoleak peut être utile dans bien d’autre cas !</b></p>
                     </section>
 
 
@@ -570,49 +576,49 @@ img.diagram {
 
                 <section>
                     <h2>Race Condition</h2>
-                    <p >Un bug logique dans lequel on peux modifier une variable
-                    pendant que le programme l'utilise et ne la vérifie pas</p>
-                    <p class="fragment" >Aussi appellée TOCTOU(Time Of Check
+                    <p >Un bug logique dans lequel on peut modifier une variable
+                    pendant que le programme l’utilise et ne la vérifie pas</p>
+                    <p class="fragment" >Aussi appellée TOCTOU (Time Of Check
                     Time Of Use) pour les fous</p>
-                    <p class="fragment" >Exemple: le programme écris dans un
-                    fichier temporaire et le réutilise plus tard, on peux
+                    <p class="fragment" >Exemple : le programme écrit dans un
+                    fichier temporaire et le réutilise plus tard, on peut
                     réécrire ce fichier</p>
                 </section>
 
                 <section>
                     <h2>Command Injection</h2>
-                    <p >Un bug logique possible lorsque l'on laisse
-                    l'utilisateur renseigner des arguments d'une commande.</p>
-                    <p class="fragment" >Si non sanitizé l'utilisateur peut
-                    escape et exécuter les commandes qu'il veux, exemple: "cat
+                    <p >Un bug logique possible lorsqu’on laisse
+                    l’utilisateur renseigner des arguments d’une commande.</p>
+                    <p class="fragment" >Si non-sanitisés, l’utilisateur peut
+                    escape et exécuter les commandes qu’il veux, exemple : "cat
                     test;/bin/sh"</p>
-                    <p class="fragment" >Un autre exemple connu: les
-                    SQLi(injections SQL)</p>
+                    <p class="fragment" >Un autre exemple connu : les
+                    SQLi (injections SQL)</p>
                 </section>
 
                 <section>
                     <section>
                         <h2>Format String</h2>
-                        <p >Un bug présent lorsqu'un programme printf un input que
-                        l'utilisateur controle</p>
-                        <p class="fragment" >Le printf charge ses arguments dans le
-                        stack. Il est possible d'abuser cette technique afin de
+                        <p >Un bug présent lorsqu’un programme printf un input que
+                        l’utilisateur controle</p>
+                        <p class="fragment" >Le printf charge ses arguments dans la
+                        stack. Il est possible d’abuser cette technique afin de
                         jouer avec la stack</p>
 
                     </section>
 
                     <section>
                         <ul>
-                            <li>%x: Affiche le paramètre en hexadécimal</li>
-                            <li class="fragment" >%n: Ecris le nombre de charactères
-                                imprimés dans l'argument traité en tant que liointeur</li>
-                            <li class="fragment" >%.33d: Ecris 33 charactères</li>
-                            <li class="fragment" >%2$x: affiche le second liaramètre dans
-                                la stack. Fonctionne avec n'importe quels charactères
-                                spéciaux de lirintf</li>
+                            <li>%x : Affiche le paramètre en hexadécimal</li>
+                            <li class="fragment" >%n : Écrit le nombre de charactères
+                                imprimés dans l’argument traité en tant que pointeur</li>
+                            <li class="fragment" >%.33d : Écrit 33 charactères</li>
+                            <li class="fragment" >%2$x : Affiche le second paramètre dans
+                                la stack. Fonctionne avec n’importe quels charactères
+                                spéciaux de printf</li>
                         </ul>
-                        <p class="fragment" >Exemple: %.65536d%35$n écris la valeur
-                        65535(0x10000) sur l'élément liointé liar la 35ème valeur sur
+                        <p class="fragment" >Exemple : %.65536d%35$n écrit la valeur
+                        65535 (0x10000) sur l’élément pointé par la 35ème valeur sur
                         la stack</p>
                     </section>
                 </section>
