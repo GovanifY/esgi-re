@@ -286,7 +286,7 @@ img.diagram {
                     </section>
                     <section>
                         <p ><b>Stack Cookie</b>:</br> Mets toute les variables
-                        locales avant les variables de type buffer dans le stack et
+                        locales avant les variables de type buffer dans la stack et
                         ajoute une valeur
                         aléatoire avant la valeur de retour et la vérifie avant
                         chaque exécution. Rends le ROP plus difficile</p>
@@ -301,18 +301,18 @@ img.diagram {
                         d'exploitation réutilisant du code déjà existant.
                         Indispensable si le NX est présent</p>
                         <p class="fragment" >Peux être exploité quand on peux
-                        réécrire l'adresse de retour dans le stack(gràce a, par
+                        réécrire l'adresse de retour dans la stack (grâce a, par
                         exemple, un buffer overflow)</p>
                     </section>
                     <section>
                         <h2>Buffer overflow</h2>
                         <p >On écris par dela un buffer ce qui réécris l'adresse
-                        de retour dans le stack</p>
+                        de retour dans la stack</p>
                         <p class="fragment" >On peux savoir ou elle est réécrite
                         en créant un pattern de brujin et regardant quelle
                         valeur contient eip</p>
                         <p class="fragment" >Si le programme segfault avant de réécrire
-                        cette adresse regardez la première valeur sur le stack
+                        cette adresse regardez la première valeur sur la stack
                         dans gdb au moment du ret fatidique</p>
                     </section>
                     <section>
@@ -339,7 +339,7 @@ img.diagram {
                     </section>
                     <section>
                         <h2>Arguments</h2>
-                        <p>Exemple stack</p>
+                        <p>Exempla stack</p>
                         <img src="img/arg-stack.png"></img>
                         <p class="fragment" data-fragment-index="2">Exemple registre</p>
                         <img class="fragment" data-fragment-index="2" src="img/arg-reg.png"></img>
@@ -475,7 +475,7 @@ img.diagram {
                             <div class="log">
                                 <p class="old"><code>function_stack</code> n'est pas encore
                                 appellé</p>
-                                <p ><code>function_stack</code> est appelé, le stack se met à
+                                <p ><code>function_stack</code> est appelé, la stack se met à
                                 jour, Stack[0x4] est utilisé comme argument</p>
                             </div>
                         </div>
@@ -499,7 +499,7 @@ img.diagram {
                         </table>
                         <div class="logparent">
                             <div class="log">
-                                <p class="old" ><code>function_stack</code> est appelé, le stack se met à
+                                <p class="old" ><code>function_stack</code> est appelé, la stack se met à
                                 jour, Stack[0x4] est utilisé comme argument</p>
                                 <p >Le stack est màj, pop est appellé et enlève
                                 l'argument du stack</p>
@@ -597,7 +597,7 @@ img.diagram {
                         l'utilisateur controle</p>
                         <p class="fragment" >Le printf charge ses arguments dans le
                         stack. Il est possible d'abuser cette technique afin de
-                        jouer avec le stack</p>
+                        jouer avec la stack</p>
 
                     </section>
 
@@ -608,12 +608,12 @@ img.diagram {
                                 imprimés dans l'argument traité en tant que liointeur</li>
                             <li class="fragment" >%.33d: Ecris 33 charactères</li>
                             <li class="fragment" >%2$x: affiche le second liaramètre dans
-                                le stack. Fonctionne avec n'importe quels charactères
+                                la stack. Fonctionne avec n'importe quels charactères
                                 spéciaux de lirintf</li>
                         </ul>
                         <p class="fragment" >Exemple: %.65536d%35$n écris la valeur
                         65535(0x10000) sur l'élément liointé liar la 35ème valeur sur
-                        le stack</p>
+                        la stack</p>
                     </section>
                 </section>
 
